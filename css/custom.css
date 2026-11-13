@@ -1,0 +1,947 @@
+/* ==========================================
+   1. 全局变量与卡片实心化（去除透明度）
+   ========================================== */
+:root {
+  --trans-light: #ffffff; /* 纯白实心 */
+  --trans-dark: #191919;  /* 纯黑实心 */
+  --border-style: 1px solid rgb(169, 169, 169);
+  --backdrop-filter: none; /* 彻底去除毛玻璃 */
+}
+
+/* 首页文章卡片 */
+#recent-posts > .recent-post-item {
+  background: var(--trans-light);
+  backdrop-filter: var(--backdrop-filter);
+  border-radius: 25px;
+  border: var(--border-style);
+}
+
+/* 首页侧栏卡片 */
+#aside-content .card-widget {
+  background: var(--trans-light);
+  backdrop-filter: var(--backdrop-filter);
+  border-radius: 18px;
+  border: var(--border-style);
+}
+
+/* 文章页、归档页、普通页面 */
+div#post,
+div#page,
+div#archive {
+  background: var(--trans-light);
+  backdrop-filter: var(--backdrop-filter);
+  border: var(--border-style);
+  border-radius: 20px;
+}
+
+/* 夜间模式遮罩实心化 */
+[data-theme="dark"] #recent-posts > .recent-post-item,
+[data-theme="dark"] #aside-content .card-widget,
+[data-theme="dark"] div#post,
+[data-theme="dark"] div#archive,
+[data-theme="dark"] div#page {
+  background: var(--trans-dark);
+}
+
+/* 夜间模式页脚页头遮罩透明 (保留透明) */
+[data-theme="dark"] #footer::before {
+  background: transparent !important;
+}
+[data-theme="dark"] #page-header::before {
+  background: transparent !important;
+}
+
+/* 阅读模式实心化 */
+.read-mode #aside-content .card-widget {
+  background: #9eccab !important;
+}
+.read-mode div#post {
+  background: #9eccab !important;
+}
+
+/* 夜间模式下的阅读模式实心化 */
+[data-theme="dark"] .read-mode #aside-content .card-widget {
+  background: #191919 !important;
+  color: #ffffff;
+}
+[data-theme="dark"] .read-mode div#post {
+  background: #191919 !important;
+  color: #ffffff;
+}
+
+/* 翻页按钮居中 */
+#pagination {
+  width: 100%;
+  margin: auto;
+}
+
+/* ==========================================
+   2. 导航栏与菜单设置
+   ========================================== */
+/* 一级菜单居中 */
+#nav .menus_items {
+  position: absolute !important;
+  width: fit-content !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+/* 子菜单横向展示 */
+#nav .menus_items .menus_item:hover .menus_item_child {
+  display: flex !important;
+}
+.menus_items .menus_item:nth-child(2) .menus_item_child {
+  left: -125px;
+}
+
+/* ==========================================
+   3. 侧边栏卡片特效
+   ========================================== */
+/* 侧边栏个人信息卡片动态渐变色 */
+#aside-content > .card-widget.card-info {
+  background: linear-gradient(
+    -45deg,
+    #e8d8b9,
+    #eccec5,
+    #a3e9eb,
+    #bdbdf0,
+    #eec1ea
+  );
+  box-shadow: 0 0 5px rgb(66, 68, 68);
+  position: relative;
+  background-size: 400% 400%;
+  -webkit-animation: Gradient 10s ease infinite;
+  -moz-animation: Gradient 10s ease infinite;
+  animation: Gradient 10s ease infinite !important;
+}
+/* 侧边栏个人信息卡片自定义背景图 */
+#aside-content > .card-widget.card-info {
+  /* 把这里的路径换成你自己的图片路径 */
+  background: url('/img/bj1.png') no-repeat center center !important;
+  background-size: cover !important; /* 让图片铺满整个卡片 */
+  box-shadow: 0 0 5px rgb(66, 68, 68);
+  position: relative;
+}
+
+
+/* 如果你想加一层半透明遮罩，让背景图不至于太花导致文字看不清，可以把下面的代码也加上去 */
+#aside-content > .card-widget.card-info::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* 透明度 0.2，数字越小图越清晰，越大图越白 */
+  border-radius: inherit;
+  z-index: -1; /* 放在底层 */
+}
+
+/* 黑夜模式适配 */
+[data-theme="dark"] #aside-content > .card-widget.card-info {
+  background: #191919;
+}
+
+/* 个人信息Follow me按钮 */
+#aside-content > .card-widget.card-info > #card-info-btn {
+  background-color: #3eb8be;
+  border-radius: 8px;
+}
+
+/* ==========================================
+   4. 加载进度条 (Pace)
+   ========================================== */
+.pace {
+    -webkit-pointer-events: none;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    z-index: 2000;
+    position: fixed;
+    margin: auto;
+    top: 4px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    border-radius: 8px;
+    width: 7rem;
+    background: #eaecf2;
+    border: 1px #e3e8f7;
+    overflow: hidden
+}
+.pace-inactive .pace-progress {
+    opacity: 0;
+    transition: .3s ease-in
+}
+.pace .pace-progress {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    max-width: 200px;
+    position: absolute;
+    z-index: 2000;
+    display: block;
+    top: 0;
+    right: 100%;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, #43cea2, #3866ca);
+    animation: gradient 2s ease infinite;
+    background-size: 200%
+}
+.pace.pace-inactive {
+    opacity: 0;
+    transition: .3s;
+    top: -8px
+}
+
+/* ==========================================
+   5. 文章标题风车效果
+   ========================================== */
+h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
+  -webkit-animation: ccc 4s linear infinite;
+  animation: ccc 4s linear infinite;
+}
+@-webkit-keyframes ccc {
+  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  to { -webkit-transform: rotate(-1turn); transform: rotate(-1turn); }
+}
+@keyframes ccc {
+  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  to { -webkit-transform: rotate(-1turn); transform: rotate(-1turn); }
+}
+#content-inner.layout h1::before { color: #ef50a8; margin-left: -1.55rem; font-size: 1.3rem; margin-top: -0.23rem; }
+#content-inner.layout h2::before { color: #fb7061; margin-left: -1.35rem; font-size: 1.1rem; margin-top: -0.12rem; }
+#content-inner.layout h3::before { color: #ffbf00; margin-left: -1.22rem; font-size: 0.95rem; margin-top: -0.09rem; }
+#content-inner.layout h4::before { color: #a9e000; margin-left: -1.05rem; font-size: 0.8rem; margin-top: -0.09rem; }
+#content-inner.layout h5::before { color: #57c850; margin-left: -0.9rem; font-size: 0.7rem; margin-top: 0rem; }
+#content-inner.layout h6::before { color: #5ec1e0; margin-left: -0.9rem; font-size: 0.66rem; margin-top: 0rem; }
+#content-inner.layout h1:hover, #content-inner.layout h2:hover, #content-inner.layout h3:hover, #content-inner.layout h4:hover, #content-inner.layout h5:hover, #content-inner.layout h6:hover { color: var(--theme-color); }
+#content-inner.layout h1:hover::before, #content-inner.layout h2:hover::before, #content-inner.layout h3:hover::before, #content-inner.layout h4:hover::before, #content-inner.layout h5:hover::before, #content-inner.layout h6:hover::before {
+  color: var(--theme-color);
+  -webkit-animation: ccc 6s linear infinite;
+  animation: ccc 6s linear infinite;
+}
+
+/* ==========================================
+   6. 波浪特效 (青白色)
+   ========================================== */
+.main-hero-waves-area {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: -11px;
+  z-index: 5;
+}
+.waves-area .waves-svg {
+  width: 100%;
+  height: 5rem;
+}
+.parallax > use {
+  animation: move-forever 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+}
+.parallax > use:nth-child(1) { animation-delay: -2s; animation-duration: 7s; fill: rgba(224, 247, 250, 0.7); }
+.parallax > use:nth-child(2) { animation-delay: -3s; animation-duration: 10s; fill: rgba(224, 247, 250, 0.5); }
+.parallax > use:nth-child(3) { animation-delay: -4s; animation-duration: 13s; fill: rgba(224, 247, 250, 0.3); }
+.parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 20s; fill: #E0F7FA; }
+
+[data-theme="dark"] .parallax > use:nth-child(1) { fill: rgba(50, 90, 95, 0.6); }
+[data-theme="dark"] .parallax > use:nth-child(2) { fill: rgba(40, 80, 85, 0.4); }
+[data-theme="dark"] .parallax > use:nth-child(3) { fill: rgba(30, 70, 75, 0.2); }
+[data-theme="dark"] .parallax > use:nth-child(4) { fill: #1a3a3e; }
+
+@keyframes move-forever {
+  0% { transform: translate3d(-90px, 0, 0); }
+  100% { transform: translate3d(85px, 0, 0); }
+}
+@media (max-width: 768px) {
+  .waves-area .waves-svg { height: 40px; min-height: 40px; }
+}
+
+/* ==========================================
+   7. 页脚与音乐播放器
+   ========================================== */
+#footer {
+  background: transparent !important;
+}
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  left: -66px !important;
+}
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+  left: 0 !important;
+}
+
+/* ==========================================
+   8. 顶部栏与手机侧边栏 (实心化)
+   ========================================== */
+#page-header.nav-fixed #nav {
+  background: #f6eff6 !important; 
+}
+[data-theme=dark] #page-header.nav-fixed #nav {
+  background: #2a2a2a !important;
+}
+#nav .show {
+  background: #f6eff6 !important;
+}
+[data-theme=dark] #nav .show {
+  background: #2a2a2a !important;
+}
+#sidebar #sidebar-menus.open {
+  background: #f6eff6 !important;
+  border-radius: 6px 0 0 6px;
+}
+[data-theme=dark] #sidebar #sidebar-menus.open {
+  background: #2a2a2a !important;
+  border-radius: 6px 0 0 6px;
+}
+
+
+/* ==========================================
+   10. 字体声明与夜间发光特效
+   ========================================== */
+
+/* =========================================
+   终极本地字体组合：霞鹜文楷 + Maple Mono
+   ========================================= */
+
+/* 1. 引入本地霞鹜文楷 (中文) */
+@font-face {
+  font-family: 'LXGW WenKai';
+  src: url('/font/LXGWWenKai-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 2. 引入本地 Maple Mono (英文/代码) */
+@font-face {
+  font-family: 'Maple Mono';
+  src: url('/font/MapleMono.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 3. 全局应用 (英文优先 Maple Mono，中文匹配霞鹜文楷) */
+body, p, span, a, div, h1, h2, h3, h4, h5, h6, #nav, #site-title, #site-subtitle, .post-content, #article-container, .card-widget, #footer-wrap {
+  font-family: 'Maple Mono', 'LXGW WenKai', 'PingFang SC', 'Microsoft YaHei', sans-serif !important;
+  font-weight: 500 !important; 
+}
+
+/* 4. 针对标题加粗，保持层级感 */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold !important;
+}
+
+/* 5. 代码块保护 (让代码块也使用 Maple Mono) */
+code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highlight * {
+  font-family: 'Maple Mono', 'Consolas', 'Monaco', monospace !important;
+  font-weight: normal !important;
+  letter-spacing: 0 !important;
+}
+
+/* =========================================
+   🚨 终极保护：拯救被挤没的 KaTeX 公式
+   ========================================= */
+.katex, .katex * {
+  font-family: 'KaTeX_Math', 'KaTeX_Main', 'Times New Roman', serif !important;
+  font-weight: normal !important; 
+  letter-spacing: 0 !important; /* 绝对不能加字间距，否则公式会隐形 */
+}
+
+
+/* 日间模式不生效 */
+[data-theme="light"] #site-name,
+[data-theme="light"] #site-title,
+[data-theme="light"] #site-subtitle,
+[data-theme="light"] #post-info {
+  animation: none;
+}
+/* 夜间模式生效 */
+[data-theme="dark"] #site-name,
+[data-theme="dark"] #site-title {
+  animation: light_15px 10s linear infinite;
+}
+[data-theme="dark"] #site-subtitle {
+  animation: light_10px 10s linear infinite;
+}
+[data-theme="dark"] #post-info {
+  animation: light_5px 10s linear infinite;
+}
+
+/* 关键帧描述 */
+@keyframes light_15px {
+  0% { text-shadow: #5636ed 0 0 15px; }
+  12.5% { text-shadow: #11ee5e 0 0 15px; }
+  25% { text-shadow: #f14747 0 0 15px; }
+  37.5% { text-shadow: #f1a247 0 0 15px; }
+  50% { text-shadow: #b347f1 0 0 15px; }
+  62.5% { text-shadow: #002afa 0 0 15px; }
+  75% { text-shadow: #ed709b 0 0 15px; }
+  87.5% { text-shadow: #39c5bb 0 0 15px; }
+  100% { text-shadow: #5636ed 0 0 15px; }
+}
+@keyframes light_10px {
+  0% { text-shadow: #5636ed 0 0 10px; }
+  12.5% { text-shadow: #11ee5e 0 0 10px; }
+  25% { text-shadow: #f14747 0 0 10px; }
+  37.5% { text-shadow: #f1a247 0 0 10px; }
+  50% { text-shadow: #b347f1 0 0 10px; }
+  62.5% { text-shadow: #002afa 0 0 10px; }
+  75% { text-shadow: #ed709b 0 0 10px; }
+  87.5% { text-shadow: #39c5bb 0 0 10px; }
+  100% { text-shadow: #5636ed 0 0 10px; }
+}
+@keyframes light_5px {
+  0% { text-shadow: #5636ed 0 0 5px; }
+  12.5% { text-shadow: #11ee5e 0 0 5px; }
+  25% { text-shadow: #f14747 0 0 5px; }
+  37.5% { text-shadow: #f1a247 0 0 15px; }
+  50% { text-shadow: #b347f1 0 0 5px; }
+  62.5% { text-shadow: #002afa 0 0 5px; }
+  75% { text-shadow: #ed709b 0 0 5px; }
+  87.5% { text-shadow: #39c5bb 0 0 5px; }
+  100% { text-shadow: #5636ed 0 0 5px; }
+}
+
+/* ==========================================
+   11. 评论输入框提示与 Owo 动画
+   ========================================== */
+#owo-big {
+    position: fixed;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    border: 1px #aaa solid;
+    border-radius: 10px;
+    z-index: 9999;
+    display: none;
+    transform: translate(0, -105%);
+    overflow: hidden;
+    animation: owoIn 0.3s cubic-bezier(0.42, 0, 0.3, 1.11);
+}
+[data-theme=dark] #owo-big {
+    background-color: #4a4a4a
+}
+#owo-big img {
+    width: 100%;
+}
+@keyframes owoIn {
+    0% { transform: translate(0, -95%); opacity: 0; }
+    100% { transform: translate(0, -105%); opacity: 1; }
+}
+
+.el-input.el-input--small.el-input-group.el-input-group--prepend:nth-child(1):before { content: '输入QQ号会自动获取昵称和头像🐧'; }
+.el-input.el-input--small.el-input-group.el-input-group--prepend:nth-child(2):before { content: '收到回复将会发送到您的邮箱📧'; }
+.el-input.el-input--small.el-input-group.el-input-group--prepend:nth-child(3):before { content: '可以通过昵称访问您的网站🔗'; }
+.el-input.el-input--small.el-input-group.el-input-group--prepend:focus-within::before,
+.el-input.el-input--small.el-input-group.el-input-group--prepend:focus-within::after { display: block; }
+
+.el-input.el-input--small.el-input-group.el-input-group--prepend::before {
+    display: none;
+    position: absolute;
+    top: -60px;
+    white-space: nowrap;
+    border-radius: 10px;
+    left: 50%;
+    transform: translate(-50%);
+    padding: 14px 18px;
+    background: #444;
+    color: #fff;
+}
+.el-input.el-input--small.el-input-group.el-input-group--prepend::after {
+    display: none;
+    content: '';
+    position: absolute;
+    border: 12px solid transparent;
+    border-top-color: #444;
+    left: 50%;
+    transform: translate(-50%, -48px);
+}
+
+/* 亮色模式下隐藏 */
+[data-theme='light'] #universe {
+  display: none;
+}
+/* 暗色模式下隐藏 */
+[data-theme='dark'] #canvas_sakura {
+  display: none;
+}
+/* 亮色色模式下显示 */
+[data-theme='light'] #canvas_sakura {
+  display: inline;
+}
+
+/* tzy页脚样式 */
+#ft {
+  max-width: 1200px;
+  margin: 0 auto 12px;
+  display: flex;
+  color: rgb(255 255 255 / 80%) !important;
+  text-align: left;
+  flex-wrap: wrap;
+}
+
+.ft-item-1,
+.ft-item-2 {
+  display: flex;
+  height: 100%;
+  padding: 2px 14px;
+}
+
+.ft-item-1 {
+  flex-direction: column;
+  flex: 2;
+}
+
+.ft-item-2 {
+  flex: 1;
+  flex-direction: column;
+}
+
+.t-top {
+  display: flex;
+}
+
+.t-top .t-t-l {
+  display: flex;
+  flex-direction: column;
+  flex: 1.4;
+  margin-right: 10px;
+}
+
+.t-top .t-t-l .bg-ad {
+  width: 85%;
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+.btn-xz-box {
+  margin-top: 10px;
+}
+
+/* 按钮背景颜色等 */
+.btn-xz {
+  display: block;
+  background-color: var(--btn-bg);
+  color: var(--btn-color);
+  text-align: center;
+  line-height: 2.4;
+  margin: 8px 0;
+}
+
+.btn-xz:hover {
+  text-decoration: none !important;
+}
+/* 按钮悬浮颜色 */
+.btn-xz-box:hover .btn-xz {
+  background-color: var(--text-bg-hover);
+}
+
+.t-top .t-t-r {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.ft-links {
+  padding: 0 14px;
+  list-style: none;
+  margin-top: 0 !important;
+}
+
+.ft-links li a {
+  display: inline-block !important;
+  width: 50%;
+}
+/* 链接悬浮颜色 */
+.ft-links li a:hover {
+  text-decoration: none !important;
+  color: var(--theme-color) !important;
+}
+
+.ft-item-2 .ft-img-group {
+  width: 100%;
+}
+
+.ft-t {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.t-l-t {
+  padding-left: 14px;
+}
+
+.ft-item-2 .ft-img-group .img-group-item {
+  display: inline-block;
+  width: 18.4%;
+  margin-right: 14px;
+  margin-bottom: 6px;
+}
+
+.ft-item-2 .ft-img-group .img-group-item a {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+.ft-item-2 .ft-img-group .img-group-item a img {
+  width: 100%;
+  max-height: 80px;
+  border-radius: 10px;
+}
+/* 头像悬浮颜色框 */
+.ft-item-2 .ft-img-group .img-group-item a img:hover {
+  border: 2px solid var(--theme-color);
+}
+
+@media screen and (max-width: 768px) {
+  .ft-item-1 {
+    flex-basis: 100% !important;
+  }
+
+  .ft-item-2 {
+    flex-basis: 100% !important;
+  }
+
+  .t-top .t-t-l .bg-ad {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .t-top {
+    flex-wrap: wrap;
+  }
+
+  .t-top .t-t-l {
+    flex-basis: 100% !important;
+  }
+
+  .t-top .t-t-r {
+    margin-top: 16px;
+    flex-basis: 100% !important;
+  }
+}
+#footer-wrap a {
+  border-radius: 30px;
+}
+
+/* 1. 给整个页脚加一层浅浅的黑色层，不改变原有排版 */
+#footer-wrap {
+  padding: 20px 20px;
+  background: rgba(0, 0, 0, 0.25) !important; /* 浅浅的黑色遮罩 */
+  border-radius: 15px 15px 0 0; /* 稍微带点圆角看着舒服点，不喜欢可以删掉 */
+}
+
+/* 2. 只针对底部的版权、框架、旅行者号进行居中 */
+#footer-wrap .copyright,
+#footer-wrap .framework-info,
+#footer-wrap .footer_custom_text,
+#footer-wrap #workboard,
+#footer-wrap #ghbdages {
+  text-align: center !important; /* 文字居中 */
+  display: block !important;
+  margin: 8px auto !important;
+  color: rgba(255, 255, 255, 0.85) !important; /* 稍微提亮一点文字，跟浅黑底更搭配 */
+}
+
+/* 确保旅行者号那一块和徽章居中 */
+#footer-wrap #workboard,
+#footer-wrap #ghbdages {
+  display: flex !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+}
+
+/* 页脚心跳动画 */
+#heartbeat {
+  color: red;
+  animation: iconAnimate 1s ease-in-out infinite;
+}
+@-moz-keyframes iconAnimate {
+  0%, 100% { transform: scale(1); }
+  10%, 30% { transform: scale(0.9); }
+  20%, 40%, 60%, 80% { transform: scale(1.1); }
+  50%, 70% { transform: scale(1.1); }
+}
+@-webkit-keyframes iconAnimate {
+  0%, 100% { transform: scale(1); }
+  10%, 30% { transform: scale(0.9); }
+  20%, 40%, 60%, 80% { transform: scale(1.1); }
+  50%, 70% { transform: scale(1.1); }
+}
+@-o-keyframes iconAnimate {
+  0%, 100% { transform: scale(1); }
+  10%, 30% { transform: scale(0.9); }
+  20%, 40%, 60%, 80% { transform: scale(1.1); }
+  50%, 70% { transform: scale(1.1); }
+}
+@keyframes iconAnimate {
+  0%, 100% { transform: scale(1); }
+  10%, 30% { transform: scale(0.9); }
+  20%, 40%, 60%, 80% { transform: scale(1.1); }
+  50%, 70% { transform: scale(1.1); }
+}
+
+/* =========================================
+   夜间模式：压暗侧边栏个人信息卡片（头像区）
+========================================= */
+
+/* 针对夜间模式下的卡片信息区 */
+[data-theme="dark"] #aside-content > .card-widget.card-info {
+  position: relative;
+}
+
+/* 利用伪元素在图片上盖一层黑色半透明遮罩，这样背景图还是能看出来，但是不刺眼了 */
+[data-theme="dark"] #aside-content > .card-widget.card-info::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 这里的 0.5 是暗度，数值越大越黑 */
+  border-radius: inherit; /* 继承原本的圆角，防止遮罩溢出 */
+  z-index: 0; /* 放在底层 */
+}
+
+/* 确保卡片里的文字、头像、按钮在遮罩上方，且不被遮挡 */
+[data-theme="dark"] #aside-content > .card-widget.card-info > * {
+  position: relative;
+  z-index: 1; 
+}
+
+/* 顺便把头像稍微调暗一点点，显得不突兀 */
+[data-theme="dark"] #aside-content .card-info .avatar-img {
+  filter: brightness(0.85) !important;
+}
+
+/* 如果觉得卡片自带的白色阴影太亮，也可以一并去掉 */
+[data-theme="dark"] #aside-content > .card-widget.card-info {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5) !important; 
+}
+
+/* =========================================
+   回到顶部按钮：完美居中 + 显示 % 号版
+   ========================================= */
+
+/* 1. 容器强制居中 */
+#rightside #go-up {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  overflow: hidden !important; /* 防止内容溢出撑破 */
+}
+
+/* 2. 隐藏多余的空标签 */
+#rightside #go-up .scroll-percent {
+  display: none !important;
+}
+
+/* 3. 默认状态下：显示箭头，隐藏数字 */
+#rightside #go-up i.fas.fa-arrow-up {
+  display: block !important;
+  font-size: 1.1rem !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+}
+
+#rightside #go-up #percent {
+  display: none !important;
+}
+
+/* 4. 鼠标悬停状态：隐藏箭头，显示数字和 % */
+#rightside #go-up:hover i.fas.fa-arrow-up {
+  display: none !important;
+}
+
+#rightside #go-up:hover #percent {
+  display: flex !important; /* 使用 flex 保证数字和 % 在同一水平线 */
+  justify-content: center !important;
+  align-items: baseline !important; /* baseline 让 % 号的底部与数字对齐 */
+  font-size: 13px !important; /* 整体字号稍微调小一点点，防止 100% 时撑破 */
+  font-weight: bold !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+}
+
+/* 5. 显式显示 % 号，并稍微调整大小让它看起来更精致 */
+#rightside #go-up #percent span {
+  display: block !important; /* 强制显示 % 号 */
+  font-size: 10px !important; /* % 号字号比数字小一点更好看 */
+  margin-left: 1px !important;
+}
+
+
+/* 头像呼吸灯 */
+[data-theme="light"] .avatar-img {
+  animation: huxi_light 4s ease-in-out infinite;
+}
+[data-theme="dark"] .avatar-img {
+  animation: huxi_dark 4s ease-in-out infinite;
+}
+@keyframes huxi_light {
+  0% {
+    box-shadow: 0px 0px 1px 1px #e9f5fa;
+  }
+  50% {
+    box-shadow: 0px 0px 5px 5px #e9f5fa;
+  }
+  100% {
+    box-shadow: 0px 0px 1px 1px #e9f5fa;
+  }
+}
+@keyframes huxi_dark {
+  0% {
+    box-shadow: 0px 0px 1px 1px #39c5bb;
+  }
+  50% {
+    box-shadow: 0px 0px 5px 5px #39c5bb;
+  }
+  100% {
+    box-shadow: 0px 0px 1px 1px #39c5bb;
+  }
+}
+/* ==========================================
+   帧率检测 (FPS) 质感青化版
+   ========================================== */
+#fps {
+  position: fixed;
+  /* 向右上方移动：你可以根据喜好微调这里的像素值 */
+  left: 25px; 
+  bottom: 25px; 
+  z-index: 1919810;
+  
+  /* 基础质感 */
+  padding: 5px 10px !important;
+  border-radius: 8px !important;
+  font-family: 'Consolas', 'Monaco', monospace !important; /* 使用等宽字体，更像黑客数据 */
+  font-weight: bold !important;
+  font-size: 13px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+/* 日间模式 */
+[data-theme="light"] #fps {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px); /* 毛玻璃质感 */
+  -webkit-backdrop-filter: blur(8px);
+  color: #3eb8be !important; /* 文字变成青色 */
+  border-color: rgba(62, 184, 190, 0.4); /* 青色半透明边框 */
+}
+
+/* 夜间模式 */
+[data-theme="dark"] #fps {
+  background-color: rgba(25, 25, 25, 0.85);
+  backdrop-filter: blur(8px); /* 毛玻璃质感 */
+  -webkit-backdrop-filter: blur(8px);
+  color: #3eb8be !important; /* 文字变成青色 */
+  border-color: rgba(62, 184, 190, 0.5); /* 青色半透明边框 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important; /* 夜间阴影加深 */
+}
+
+/* 鼠标悬停时微微发光（可选） */
+#fps:hover {
+  border-color: #3eb8be !important;
+  box-shadow: 0 0 10px rgba(62, 184, 190, 0.4) !important;
+}
+
+/* ==========================================
+   自定义网页滚动条 (适配你的青色主题)
+   ========================================== */
+
+/* 1. 滚动条整体宽度 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* 2. 滚动条轨道 (背景) */
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 2em;
+}
+
+/* 3. 滚动条滑块 (你平时拖动的那个条) */
+::-webkit-scrollbar-thumb {
+  background-color: #3eb8be; /* 这里用的是你侧边按钮的青色，你可以随便改 */
+  background-image: -webkit-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.2) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.2) 75%,
+    transparent 75%,
+    transparent
+  );
+  border-radius: 2em;
+}
+
+/* 4. 鼠标悬停在滑块上时的颜色 (稍微变亮一点) */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #55c5cb;
+}
+
+/* 5. 夜间模式下的轨道颜色 */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-fixed #nav{
+    transform: translateY(58px)!important;
+    -webkit-transform: translateY(58px)!important;
+    -moz-transform: translateY(58px)!important;
+    -ms-transform: translateY(58px)!important;
+    -o-transform: translateY(58px)!important;
+}
+#nav{
+    transition: none!important;
+    -webkit-transition: none!important;
+    -moz-transition: none!important;
+    -ms-transition: none!important;
+    -o-transition: none!important;
+}
+
+/* ==========================================
+   导航栏：极简浅灰毛玻璃 (无悬停特效，无间距修改)
+   ========================================== */
+
+/* 日间模式：浅灰色毛玻璃 */
+#page-header.nav-fixed #nav {
+  background: rgba(240, 240, 240, 0.65) !important; /* 浅浅的灰色 */
+  backdrop-filter: blur(12px) !important; 
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03) !important; /* 极弱的阴影 */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important; 
+}
+
+/* 夜间模式：深灰色毛玻璃 */
+[data-theme=dark] #page-header.nav-fixed #nav {
+  background: rgba(40, 40, 40, 0.65) !important; /* 浅浅的深灰 */
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* ==========================================
+   在文章页隐藏【个人信息卡片】
+   ========================================== */
+
+/* 只有在文章页（post）生效，隐藏带有 card-info 类的卡片 */
+.post #aside-content > .card-widget.card-info {
+  display: none !important;
+}
