@@ -1,0 +1,15 @@
+- class_name: 我的常用链接
+  class_desc: 一些我经常访问的网站和个人主页
+  link_list:
+    - name: GitHub
+      link: https://github.com/Lemon-eggplant
+      avatar: https://github.com/identicons/Lemon-eggplant.png
+      descr: Github主页
+    - name: 洛谷
+      link: https://www.luogu.com.cn/user/1630197
+      avatar: https://a1.boltp.com/2026/11/11/6af3f6b3c2e7d.png
+      descr: 洛谷个人主页
+    - name: 博客园
+      link: https://www.cnblogs.com/victorup
+      avatar: https://a1.boltp.com/2026/11/11/6af3f741a9af5.png
+      descr: 博客园
