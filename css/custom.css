@@ -121,13 +121,18 @@ div#archive {
   position: relative;
   color: #fff !important;
 }
-/* 卡片内文字、头像、按钮统一白色 */
-#aside-content > .card-widget.card-info .card-info-data .card-info-data-item a,
-#aside-content > .card-widget.card-info .card-info-data .card-info-data-item span,
-#aside-content > .card-widget.card-info .card-info-author-links a,
-#aside-content > .card-widget.card-info .author-info__name,
-#aside-content > .card-widget.card-info .author-info__description {
+/* 卡片内文字统一亮色（选择器对应实际 DOM：author-info-name / site-data / headline / length-num） */
+#aside-content > .card-widget.card-info .author-info-name,
+#aside-content > .card-widget.card-info .author-info-description,
+#aside-content > .card-widget.card-info .site-data a,
+#aside-content > .card-widget.card-info .site-data .headline,
+#aside-content > .card-widget.card-info .site-data .length-num {
   color: #fff !important;
+}
+/* 数字更大更亮，突出显示 */
+#aside-content > .card-widget.card-info .site-data .length-num {
+  font-weight: 700;
+  color: #ffe680 !important;
 }
 /* 所有面板文字加阴影，避免在亮背景处糊成一片 */
 #aside-content > .card-widget.card-info {
@@ -1042,4 +1047,14 @@ i.sci-github    { background-image: url('/img/icons/social-github.svg') !importa
 #cursor.active { opacity: .85 !important; transform: scale(.5); -webkit-transform: scale(.5); }
 @media (max-width: 992px) {
   #cursor-position { display: none !important; }
+}
+
+/* ==========================================
+   面板文字/图标亮度修复（选择器对齐实际 DOM）
+   ========================================== */
+/* Follow Me 按钮里的 GitHub 图标强制白色 */
+#aside-content > .card-widget.card-info #card-info-btn i.fa-github { color: #fff !important; }
+/* 社交图标统一加亮：白色描边阴影，深色底也能看清 */
+.card-info-social-icons a.social-icon i[class*="sci-"] {
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, .35)) !important;
 }
