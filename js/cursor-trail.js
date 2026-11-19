@@ -66,8 +66,8 @@
         var dx = curr.x - prev.x;
         var dy = curr.y - prev.y;
         var moving = Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1;
-        prev.x = moving ? prev.x + dx * 0.15 : curr.x;
-        prev.y = moving ? prev.y + dy * 0.15 : curr.y;
+        prev.x = moving ? prev.x + dx * 0.28 : curr.x;
+        prev.y = moving ? prev.y + dy * 0.28 : curr.y;
         layer.style.transform = 'translate3d(' + prev.x + 'px,' + prev.y + 'px,0)';
         setClass('hover', isPointer(target));
         if (moving) start();

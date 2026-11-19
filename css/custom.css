@@ -113,9 +113,9 @@ div#archive {
   -moz-animation: Gradient 10s ease infinite;
   animation: Gradient 10s ease infinite !important;
 }
-/* 侧边栏个人信息卡片背景图（与站点主背景同源，渐变遮罩保证文字可读） */
+/* 侧边栏个人信息卡片背景图（与站点主背景同源，加深遮罩保证浅色文字可读） */
 #aside-content > .card-widget.card-info {
-  background: linear-gradient(rgba(20, 40, 55, .42), rgba(20, 40, 55, .55)), url('/img/card-info-bg.jpg') no-repeat center center !important;
+  background: linear-gradient(rgba(14, 30, 45, .62), rgba(14, 30, 45, .72)), url('/img/card-info-bg.jpg') no-repeat center center !important;
   background-size: cover !important;
   box-shadow: 0 0 5px rgb(66, 68, 68);
   position: relative;
@@ -128,6 +128,10 @@ div#archive {
 #aside-content > .card-widget.card-info .author-info__name,
 #aside-content > .card-widget.card-info .author-info__description {
   color: #fff !important;
+}
+/* 所有面板文字加阴影，避免在亮背景处糊成一片 */
+#aside-content > .card-widget.card-info {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .6), 0 0 6px rgba(0, 0, 0, .35);
 }
 /* 旧遮罩伪元素作废，避免叠加变暗 */
 #aside-content > .card-widget.card-info::before { display: none !important; }
@@ -942,10 +946,12 @@ code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highli
 /* ==========================================
    彩色导航图标 + 悬停高亮（参考 fomal）
    ========================================== */
+/* 压缩菜单项间距：覆盖主题默认 .menus_item 左 padding 14px */
+#nav .menus_items .menus_item { padding-left: 2px !important; }
 #nav .menus_items .menus_item > a.site-page {
   border-radius: 10px;
   transition: background .22s ease, transform .22s ease;
-  padding: 6px 10px !important;
+  padding: 4px 5px !important;
 }
 #nav .menus_items .menus_item > a.site-page:hover {
   background: #26a69a !important;
@@ -958,10 +964,10 @@ code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highli
 
 #nav i[class*="nci-"] {
   display: inline-block !important;
-  width: 1.25em !important;
-  height: 1.25em !important;
+  width: 1.2em !important;
+  height: 1.2em !important;
   vertical-align: -.28em !important;
-  margin-right: 5px !important;
+  margin-right: 3px !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
   background-size: contain !important;
@@ -1029,9 +1035,11 @@ i.sci-github    { background-image: url('/img/icons/social-github.svg') !importa
 /* ==========================================
    fomal 同款跟随光晕光标（三态）
    ========================================== */
+/* 基础不透明度：用 !important 覆盖 JS 行内的 opacity:0（否则平时不可见，只剩悬停/点击才隐约出现） */
+#cursor { opacity: .6 !important; }
 #cursor.hidden { opacity: 0 !important; }
-#cursor.hover { opacity: .1 !important; transform: scale(2.5); -webkit-transform: scale(2.5); }
-#cursor.active { opacity: .5 !important; transform: scale(.5); -webkit-transform: scale(.5); }
+#cursor.hover { opacity: .28 !important; transform: scale(2); -webkit-transform: scale(2); }
+#cursor.active { opacity: .85 !important; transform: scale(.5); -webkit-transform: scale(.5); }
 @media (max-width: 992px) {
   #cursor-position { display: none !important; }
 }
