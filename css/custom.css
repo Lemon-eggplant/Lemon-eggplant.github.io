@@ -820,9 +820,11 @@ code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highli
    ========================================== */
 #fps {
   position: fixed;
-  /* 向右上方移动：你可以根据喜好微调这里的像素值 */
-  left: 25px; 
-  bottom: 25px; 
+  /* 移到右上角导航下方，避开左下角的音乐播放器 */
+  right: 24px;
+  top: 76px;
+  left: auto;
+  bottom: auto;
   z-index: 1919810;
   
   /* 基础质感 */
@@ -859,6 +861,10 @@ code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highli
 #fps:hover {
   border-color: #3eb8be !important;
   box-shadow: 0 0 10px rgba(62, 184, 190, 0.4) !important;
+}
+/* 小屏时缩小并靠右，避免遮挡内容 */
+@media (max-width: 768px) {
+  #fps { right: 12px; top: 68px; font-size: 11px !important; padding: 4px 8px !important; }
 }
 
 /* ==========================================
