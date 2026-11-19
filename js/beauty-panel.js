@@ -40,20 +40,16 @@
     apply();
 
     function buildPanel() {
-        var box = document.createElement('div');
-        box.id = 'lemon-beauty-panel';
-        box.style.cssText = 'position:fixed;right:18px;bottom:18px;z-index:10000;font-family:inherit;';
+        if (document.getElementById('lemon-beauty-toggle')) return;
 
         var toggle = document.createElement('button');
         toggle.id = 'lemon-beauty-toggle';
+        toggle.type = 'button';
         toggle.title = '美化设置';
-        toggle.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97s-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.39-1.06-.73-1.69-.98l-.37-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1s.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.06.74 1.69.99l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.17-.59 1.69-.99l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.66Z"/></svg>';
-        toggle.style.cssText = 'width:44px;height:44px;border-radius:50%;border:none;background:var(--theme-color,#49B1F5);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.2);margin-left:auto;transition:transform .2s';
-        box.appendChild(toggle);
+        toggle.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.53c.04-.32.07-.64.07-.97s-.03-.66-.07-1l2.11-1.63c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.31-.61-.22l-2.49 1c-.52-.39-1.06-.73-1.69-.98l-.37-2.65A.506.506 0 0 0 14 2h-4c-.25 0-.46.18-.5.42l-.37 2.65c-.63.25-1.17.59-1.69.98l-2.49-1c-.22-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64L4.57 11c-.04.34-.07.67-.07 1s.03.65.07.97l-2.11 1.66c-.19.15-.25.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1.01c.52.4 1.06.74 1.69.99l.37 2.65c.04.24.25.42.5.42h4c.25 0 .46-.18.5-.42l.37-2.65c.63-.26 1.17-.59 1.69-.99l2.49 1.01c.22.08.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.66Z"/></svg>';
 
         var panel = document.createElement('div');
         panel.id = 'lemon-beauty-card';
-        panel.style.cssText = 'display:none;width:230px;margin-bottom:10px;padding:16px;border-radius:14px;background:rgba(255,255,255,.96);box-shadow:0 8px 30px rgba(0,0,0,.18);color:#333;font-size:13px;';
         panel.innerHTML =
             '<div style="font-weight:600;margin-bottom:12px;text-align:center">🎨 美化设置</div>' +
             '<div style="margin-bottom:12px"><div style="margin-bottom:6px;color:#666">主题色</div><div id="lemon-colors" style="display:flex;gap:8px;flex-wrap:wrap"></div></div>' +
@@ -71,7 +67,6 @@
                 cfg.color = c[0]; save(); apply();
                 colorWrap.querySelectorAll('button').forEach(function (x) { x.style.borderColor = 'transparent'; });
                 b.style.borderColor = '#333';
-                toggle.style.background = c[0];
             };
             colorWrap.appendChild(b);
         });
@@ -102,13 +97,21 @@
         };
 
         toggle.onclick = function () {
-            var show = panel.style.display === 'none';
-            panel.style.display = show ? 'block' : 'none';
-            toggle.style.transform = show ? 'rotate(90deg)' : '';
+            var show = !panel.classList.contains('show');
+            panel.classList.toggle('show', show);
+            toggle.classList.toggle('active', show);
         };
 
-        box.insertBefore(panel, toggle);
-        document.body.appendChild(box);
+        var menus = document.getElementById('menus');
+        var toggleMenu = document.getElementById('toggle-menu');
+        if (menus) {
+            if (toggleMenu) menus.insertBefore(toggle, toggleMenu);
+            else menus.appendChild(toggle);
+        } else {
+            toggle.classList.add('fallback');
+            document.body.appendChild(toggle);
+        }
+        document.body.appendChild(panel);
     }
 
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', buildPanel);

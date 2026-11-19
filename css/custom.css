@@ -816,55 +816,128 @@ code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highli
   }
 }
 /* ==========================================
-   帧率检测 (FPS) 质感青化版
+   帧率检测 (FPS) - 右下角悬浮按钮旁
    ========================================== */
 #fps {
   position: fixed;
-  /* 移到右上角导航下方，避开左下角的音乐播放器 */
-  right: 24px;
-  top: 76px;
+  right: 66px;
+  bottom: 88px;
+  top: auto;
   left: auto;
-  bottom: auto;
   z-index: 1919810;
-  
-  /* 基础质感 */
+
   padding: 5px 10px !important;
   border-radius: 8px !important;
-  font-family: 'Consolas', 'Monaco', monospace !important; /* 使用等宽字体，更像黑客数据 */
+  font-family: 'Consolas', 'Monaco', monospace !important;
   font-weight: bold !important;
-  font-size: 13px !important;
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+  white-space: nowrap;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   border: 1px solid transparent;
   transition: all 0.3s ease;
 }
 
-/* 日间模式 */
 [data-theme="light"] #fps {
   background-color: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px); /* 毛玻璃质感 */
+  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: #3eb8be !important; /* 文字变成青色 */
-  border-color: rgba(62, 184, 190, 0.4); /* 青色半透明边框 */
+  color: #3eb8be !important;
+  border-color: rgba(62, 184, 190, 0.4);
 }
 
-/* 夜间模式 */
 [data-theme="dark"] #fps {
   background-color: rgba(25, 25, 25, 0.85);
-  backdrop-filter: blur(8px); /* 毛玻璃质感 */
+  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  color: #3eb8be !important; /* 文字变成青色 */
-  border-color: rgba(62, 184, 190, 0.5); /* 青色半透明边框 */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important; /* 夜间阴影加深 */
+  color: #3eb8be !important;
+  border-color: rgba(62, 184, 190, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* 鼠标悬停时微微发光（可选） */
 #fps:hover {
   border-color: #3eb8be !important;
   box-shadow: 0 0 10px rgba(62, 184, 190, 0.4) !important;
 }
-/* 小屏时缩小并靠右，避免遮挡内容 */
+
 @media (max-width: 768px) {
-  #fps { right: 12px; top: 68px; font-size: 11px !important; padding: 4px 8px !important; }
+  #fps { right: 58px; bottom: 76px; font-size: 10px !important; padding: 4px 7px !important; }
+}
+
+/* ==========================================
+   美化设置：导航栏右侧小齿轮 + 弹出面板
+   ========================================== */
+#lemon-beauty-toggle {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 28px !important;
+  height: 28px !important;
+  margin-left: 10px;
+  padding: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.7) !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+  color: var(--theme-color, #49B1F5) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  vertical-align: middle;
+  transition: transform .22s ease, background .22s ease, color .22s ease, box-shadow .22s ease;
+}
+#lemon-beauty-toggle svg {
+  display: block;
+  width: 17px;
+  height: 17px;
+}
+#lemon-beauty-toggle:hover,
+#lemon-beauty-toggle.active {
+  background: var(--theme-color, #49B1F5) !important;
+  color: #fff !important;
+  transform: rotate(45deg) scale(1.06);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.2);
+}
+[data-theme="dark"] #lemon-beauty-toggle {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.22) !important;
+  color: #7dd3fc !important;
+}
+[data-theme="dark"] #lemon-beauty-toggle:hover,
+[data-theme="dark"] #lemon-beauty-toggle.active {
+  background: var(--theme-color, #49B1F5) !important;
+  color: #191919 !important;
+}
+#lemon-beauty-toggle.fallback {
+  position: fixed;
+  right: 18px;
+  top: 18px;
+  z-index: 10001;
+}
+
+#lemon-beauty-card {
+  display: none;
+  position: fixed;
+  right: 24px;
+  top: 68px;
+  z-index: 10000;
+  width: 230px;
+  max-width: calc(100vw - 32px);
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+  color: #333;
+  font-size: 13px;
+  font-family: inherit;
+}
+#lemon-beauty-card.show { display: block; }
+[data-theme="dark"] #lemon-beauty-card {
+  background: rgba(32, 32, 32, 0.96);
+  color: #eee;
+}
+[data-theme="dark"] #lemon-beauty-card select,
+[data-theme="dark"] #lemon-beauty-card input { color-scheme: dark; }
+@media (max-width: 768px) {
+  #lemon-beauty-card { right: 12px; top: 60px; }
 }
 
 /* ==========================================
