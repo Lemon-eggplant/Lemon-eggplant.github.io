@@ -3,84 +3,95 @@
     if (window.matchMedia('(pointer: coarse)').matches) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    var canvas = document.createElement('canvas');
-    canvas.id = 'cursor-trail-canvas';
-    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
-    document.body.appendChild(canvas);
+    var POINTER_SEL = 'a[href],button,summary,label,[onclick],[role=button],[role=link],input,select,textarea';
 
-    var ctx = canvas.getContext('2d');
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var w = 0, h = 0;
-    var particles = [];
-    var mouse = { x: -100, y: -100 };
-    var last = { x: -100, y: -100 };
-    var colors = ['#FFD60A', '#FFC300', '#FFE66D', '#FFB703', '#FFD166'];
+    var layer = document.createElement('div');
+    layer.id = 'cursor-position';
+    layer.style.cssText = 'position:fixed;left:0;top:0;width:16px;height:16px;pointer-events:none;z-index:10086;';
 
-    function resize() {
-        w = window.innerWidth;
-        h = window.innerHeight;
-        canvas.width = w * dpr;
-        canvas.height = h * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var cursor = document.createElement('div');
+    cursor.id = 'cursor';
+    cursor.className = 'hidden';
+    cursor.style.cssText = 'position:absolute;left:0;top:0;width:16px;height:16px;border-radius:8px;opacity:0;pointer-events:none;transition:background .2s ease-in-out,opacity .2s ease-in-out,transform .2s ease-in-out;';
+    layer.appendChild(cursor);
+    document.body.appendChild(layer);
+
+    var styleTag = document.createElement('style');
+    styleTag.id = 'cursor-style';
+    document.head.appendChild(styleTag);
+
+    function getColor() {
+        var c = getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim();
+        return c || '#39c5bb';
     }
-    resize();
-    window.addEventListener('resize', resize);
 
-    function spawn(x, y, n) {
-        for (var i = 0; i < n; i++) {
-            var a = Math.random() * Math.PI * 2;
-            var s = Math.random() * 1.8;
-            particles.push({
-                x: x + (Math.random() - 0.5) * 8,
-                y: y + (Math.random() - 0.5) * 8,
-                vx: Math.cos(a) * s,
-                vy: Math.sin(a) * s - 0.3,
-                life: 1,
-                decay: 0.018 + Math.random() * 0.02,
-                size: 1.5 + Math.random() * 3,
-                color: colors[(Math.random() * colors.length) | 0]
-            });
-        }
-        if (particles.length > 220) particles.splice(0, particles.length - 220);
+    var lastColor = '';
+    function applyColor() {
+        var c = getColor();
+        if (c === lastColor) return;
+        lastColor = c;
+        cursor.style.background = c;
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><circle cx="4" cy="4" r="4" fill="' + c + '"/></svg>';
+        styleTag.textContent = '* { cursor: url("data:image/svg+xml,' + encodeURIComponent(svg) + '") 4 4, auto !important; }';
+    }
+    applyColor();
+
+    // 主题色变化时同步光晕和光标颜色
+    if (window.MutationObserver) {
+        new MutationObserver(applyColor).observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+    }
+
+    var curr = null;
+    var prev = null;
+    var raf = null;
+    var target = null;
+
+    function isPointer(el) {
+        if (!el || el.nodeType !== 1) return false;
+        try { return !!el.closest(POINTER_SEL); } catch (e) { return false; }
+    }
+
+    function setClass(name, on) {
+        if (cursor.classList.contains(name) !== on) cursor.classList.toggle(name, on);
+    }
+
+    function start() {
+        if (raf === null) raf = requestAnimationFrame(render);
+    }
+
+    function render() {
+        raf = null;
+        if (!curr) return;
+        if (!prev) prev = { x: curr.x, y: curr.y };
+        var dx = curr.x - prev.x;
+        var dy = curr.y - prev.y;
+        var moving = Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1;
+        prev.x = moving ? prev.x + dx * 0.15 : curr.x;
+        prev.y = moving ? prev.y + dy * 0.15 : curr.y;
+        layer.style.transform = 'translate3d(' + prev.x + 'px,' + prev.y + 'px,0)';
+        setClass('hover', isPointer(target));
+        if (moving) start();
     }
 
     document.addEventListener('mousemove', function (e) {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-        var dist = Math.hypot(mouse.x - last.x, mouse.y - last.y);
-        if (dist > 4) {
-            spawn(mouse.x, mouse.y, Math.min(4, Math.ceil(dist / 12)));
-            last.x = mouse.x;
-            last.y = mouse.y;
-        }
+        curr = { x: e.clientX - 8, y: e.clientY - 8 };
+        target = e.target;
+        setClass('hidden', false);
+        start();
     }, { passive: true });
 
-    document.addEventListener('click', function (e) {
-        spawn(e.clientX, e.clientY, 18);
+    document.addEventListener('mouseover', function (e) {
+        target = e.target;
+        if (curr) start();
     }, { passive: true });
 
-    function loop() {
-        ctx.clearRect(0, 0, w, h);
-        for (var i = particles.length - 1; i >= 0; i--) {
-            var p = particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-            p.vy += 0.02;
-            p.vx *= 0.98;
-            p.vy *= 0.98;
-            p.life -= p.decay;
-            if (p.life <= 0) {
-                particles.splice(i, 1);
-                continue;
-            }
-            ctx.globalAlpha = p.life * 0.85;
-            ctx.fillStyle = p.color;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
-            ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(loop);
-    }
-    requestAnimationFrame(loop);
+    document.addEventListener('mousedown', function () { setClass('active', true); });
+    document.addEventListener('mouseup', function () { setClass('active', false); });
+    document.addEventListener('mouseleave', function () { setClass('hidden', true); setClass('active', false); });
+    window.addEventListener('blur', function () { setClass('hidden', true); setClass('active', false); });
+    document.addEventListener('visibilitychange', function () {
+        if (document.hidden) { setClass('hidden', true); setClass('active', false); }
+    });
+    window.addEventListener('resize', function () { applyColor(); }, { passive: true });
+    document.addEventListener('pjax:complete', function () { applyColor(); setClass('hidden', true); });
 })();

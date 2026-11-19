@@ -113,32 +113,28 @@ div#archive {
   -moz-animation: Gradient 10s ease infinite;
   animation: Gradient 10s ease infinite !important;
 }
-/* 侧边栏个人信息卡片自定义背景图 */
+/* 侧边栏个人信息卡片背景图（与站点主背景同源，渐变遮罩保证文字可读） */
 #aside-content > .card-widget.card-info {
-  /* 把这里的路径换成你自己的图片路径 */
-  background: url('/img/bj1.png') no-repeat center center !important;
-  background-size: cover !important; /* 让图片铺满整个卡片 */
+  background: linear-gradient(rgba(20, 40, 55, .42), rgba(20, 40, 55, .55)), url('/img/card-info-bg.jpg') no-repeat center center !important;
+  background-size: cover !important;
   box-shadow: 0 0 5px rgb(66, 68, 68);
   position: relative;
+  color: #fff !important;
 }
-
-
-/* 如果你想加一层半透明遮罩，让背景图不至于太花导致文字看不清，可以把下面的代码也加上去 */
-#aside-content > .card-widget.card-info::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* 透明度 0.2，数字越小图越清晰，越大图越白 */
-  border-radius: inherit;
-  z-index: -1; /* 放在底层 */
+/* 卡片内文字、头像、按钮统一白色 */
+#aside-content > .card-widget.card-info .card-info-data .card-info-data-item a,
+#aside-content > .card-widget.card-info .card-info-data .card-info-data-item span,
+#aside-content > .card-widget.card-info .card-info-author-links a,
+#aside-content > .card-widget.card-info .author-info__name,
+#aside-content > .card-widget.card-info .author-info__description {
+  color: #fff !important;
 }
+/* 旧遮罩伪元素作废，避免叠加变暗 */
+#aside-content > .card-widget.card-info::before { display: none !important; }
 
-/* 黑夜模式适配 */
+/* 黑夜模式：压暗同源背景，保持与站点夜色一致 */
 [data-theme="dark"] #aside-content > .card-widget.card-info {
-  background: #191919;
+  background: linear-gradient(rgba(0, 0, 0, .55), rgba(0, 0, 0, .68)), url('/img/card-info-bg.jpg') no-repeat center center !important;
 }
 
 /* 个人信息Follow me按钮 */
@@ -710,20 +706,10 @@ code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highli
   position: relative;
 }
 
-/* 利用伪元素在图片上盖一层黑色半透明遮罩，这样背景图还是能看出来，但是不刺眼了 */
-[data-theme="dark"] #aside-content > .card-widget.card-info::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 这里的 0.5 是暗度，数值越大越黑 */
-  border-radius: inherit; /* 继承原本的圆角，防止遮罩溢出 */
-  z-index: 0; /* 放在底层 */
-}
+/* 遮罩已合并进 background 渐变，此处伪元素统一作废（含夜间模式） */
+[data-theme="dark"] #aside-content > .card-widget.card-info::before { display: none !important; }
 
-/* 确保卡片里的文字、头像、按钮在遮罩上方，且不被遮挡 */
+/* 确保卡片内容正常显示 */
 [data-theme="dark"] #aside-content > .card-widget.card-info > * {
   position: relative;
   z-index: 1; 
@@ -970,7 +956,7 @@ code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highli
   color: #fff !important;
 }
 
-#nav i[class^="nci-"] {
+#nav i[class*="nci-"] {
   display: inline-block !important;
   width: 1.25em !important;
   height: 1.25em !important;
@@ -981,7 +967,7 @@ code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highli
   background-size: contain !important;
   font-style: normal !important;
 }
-#nav i[class^="nci-"]::before { display: none !important; }
+#nav i[class*="nci-"]::before { display: none !important; }
 #nav i.nci-home    { background-image: url('/img/icons/nav-home.svg') !important; }
 #nav i.nci-archive { background-image: url('/img/icons/nav-archive.svg') !important; }
 #nav i.nci-tags    { background-image: url('/img/icons/nav-tags.svg') !important; }
@@ -990,7 +976,7 @@ code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highli
 #nav i.nci-about   { background-image: url('/img/icons/social-about.svg') !important; }
 
 /* 悬停高亮时图标保持彩色，不反色 */
-#nav .menus_item > a.site-page:hover i[class^="nci-"] { filter: none !important; }
+#nav .menus_item > a.site-page:hover i[class*="nci-"] { filter: none !important; }
 
 /* ==========================================
    彩色社交图标（个人面板）
@@ -1013,4 +999,39 @@ i.sci-luogu     { background-image: url('/img/icons/social-luogu.svg') !importan
 i.sci-qq        { background-image: url('/img/icons/social-qq.svg') !important; }
 i.sci-bilibili  { background-image: url('/img/icons/social-bilibili.svg') !important; }
 i.sci-github    { background-image: url('/img/icons/social-github.svg') !important; }
-i.sci-email     { background-image: url('/img/icons/social-email.svg') !important; }
+
+/* ==========================================
+   博客名悬停变成青色小房子按钮（参考 fomal）
+   ========================================== */
+#nav #blog-info > a.nav-site-title {
+  position: relative;
+  border-radius: 10px;
+  padding: 6px 12px !important;
+  transition: background .22s ease;
+}
+#nav #blog-info > a.nav-site-title .site-name {
+  transition: opacity .18s ease;
+}
+#nav #blog-info > a.nav-site-title::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #26a69a url('/img/icons/nav-home-white.svg') no-repeat center center;
+  background-size: 20px 20px;
+  border-radius: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease;
+}
+#nav #blog-info > a.nav-site-title:hover::after { opacity: 1; }
+#nav #blog-info > a.nav-site-title:hover .site-name { opacity: 0; }
+
+/* ==========================================
+   fomal 同款跟随光晕光标（三态）
+   ========================================== */
+#cursor.hidden { opacity: 0 !important; }
+#cursor.hover { opacity: .1 !important; transform: scale(2.5); -webkit-transform: scale(2.5); }
+#cursor.active { opacity: .5 !important; transform: scale(.5); -webkit-transform: scale(.5); }
+@media (max-width: 992px) {
+  #cursor-position { display: none !important; }
+}
