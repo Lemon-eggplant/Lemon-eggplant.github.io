@@ -19,12 +19,12 @@ if (document.body.clientWidth > 992) {
             navH: navH
         }
     };
-    var NEKO_SIZE = 56;
+    var NEKO_SIZE = 75;
     function nekoLineHeight(info) {
-        return Math.max(0, info.Band_H * Math.max(info.ViewH - info.navH, 1) * 0.01);
+        return Math.max(0, info.Band_H * Math.max(info.ViewH - info.navH - NEKO_SIZE, 1) * 0.01);
     }
     function nekoTop(info) {
-        return info.navH + nekoLineHeight(info) - NEKO_SIZE + 'px';
+        return info.navH + nekoLineHeight(info) + 'px';
     }
     function show(basicInfo) {
         if (basicInfo.ScrollTop > 0.001) {
@@ -42,9 +42,9 @@ if (document.body.clientWidth > 992) {
                 zoom: 0.9,
                 borderRadius: 5 + 'px',
                 right: 58 + 'px',
-                nekoname: 'nailoong',
-                nekoImg: "/img/nailoong.png",
-                hoverMsg: "奶龙来啦~",
+                nekoname: 'ropeHamster',
+                nekoImg: "/img/rope-hamster.png",
+                hoverMsg: "抓住我，回到顶部~",
                 color: "#6f42c1",
                 during: 500,
                 blog_body: "body",
@@ -134,8 +134,8 @@ if (document.body.clientWidth > 992) {
             bgcolor: '#FFC107',
             borderRadius: '2em',
             zoom: 0.82,
-            hoverMsg: '嗨，我是奶龙~',
-            nekoImg: '/img/nailoong.png'
+            hoverMsg: '抓住我，回到顶部~',
+            nekoImg: '/img/rope-hamster.png'
         }
         );
         //自定义（去掉以下注释，并注释掉其他的查看效果）

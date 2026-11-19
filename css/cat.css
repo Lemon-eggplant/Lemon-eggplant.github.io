@@ -5,16 +5,18 @@ body::-webkit-scrollbar {
 
 #myscoll {
     width: 6px !important;
-    border-radius: 999px !important;
-    background: linear-gradient(180deg, #ffe082, #ff9800) !important;
-    background-image: linear-gradient(180deg, #ffe082, #ff9800) !important;
-    box-shadow: 0 0 8px rgba(255, 193, 7, 0.45) !important;
+    border-radius: 3px !important;
+    background: url("/img/rope-tile.png") repeat-y center top !important;
+    background-image: url("/img/rope-tile.png") !important;
+    background-repeat: repeat-y !important;
+    background-size: 6px auto !important;
+    box-shadow: 0 0 4px rgba(120, 40, 30, 0.25) !important;
 }
 
 .neko {
-    width: 56px;
-    height: 56px;
-    background-image: url("/img/nailoong.png");
+    width: 52px;
+    height: 75px;
+    background-image: url("/img/rope-hamster.png");
     position: absolute;
     right: 32px;
     background-repeat: no-repeat;
