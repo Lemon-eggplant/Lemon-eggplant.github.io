@@ -953,3 +953,64 @@ code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highli
 .post #aside-content > .card-widget.card-info {
   display: none !important;
 }
+/* ==========================================
+   彩色导航图标 + 悬停高亮（参考 fomal）
+   ========================================== */
+#nav .menus_items .menus_item > a.site-page {
+  border-radius: 10px;
+  transition: background .22s ease, transform .22s ease;
+  padding: 6px 10px !important;
+}
+#nav .menus_items .menus_item > a.site-page:hover {
+  background: #26a69a !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+#nav .menus_items .menus_item > a.site-page:hover span {
+  color: #fff !important;
+}
+
+#nav i[class^="nci-"] {
+  display: inline-block !important;
+  width: 1.25em !important;
+  height: 1.25em !important;
+  vertical-align: -.28em !important;
+  margin-right: 5px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  font-style: normal !important;
+}
+#nav i[class^="nci-"]::before { display: none !important; }
+#nav i.nci-home    { background-image: url('/img/icons/nav-home.svg') !important; }
+#nav i.nci-archive { background-image: url('/img/icons/nav-archive.svg') !important; }
+#nav i.nci-tags    { background-image: url('/img/icons/nav-tags.svg') !important; }
+#nav i.nci-category{ background-image: url('/img/icons/nav-category.svg') !important; }
+#nav i.nci-box     { background-image: url('/img/icons/nav-box.svg') !important; }
+#nav i.nci-about   { background-image: url('/img/icons/social-about.svg') !important; }
+
+/* 悬停高亮时图标保持彩色，不反色 */
+#nav .menus_item > a.site-page:hover i[class^="nci-"] { filter: none !important; }
+
+/* ==========================================
+   彩色社交图标（个人面板）
+   ========================================== */
+.card-info-social-icons a.social-icon i[class^="sci-"] {
+  display: inline-block !important;
+  width: 1.35em !important;
+  height: 1.35em !important;
+  vertical-align: -.28em !important;
+  margin: 0 5px !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  font-style: normal !important;
+  transition: transform .2s ease;
+}
+.card-info-social-icons a.social-icon:hover i[class^="sci-"] { transform: translateY(-3px) scale(1.1); }
+.card-info-social-icons i[class^="sci-"]::before { display: none !important; }
+i.sci-luogu     { background-image: url('/img/icons/social-luogu.svg') !important; }
+i.sci-qq        { background-image: url('/img/icons/social-qq.svg') !important; }
+i.sci-bilibili  { background-image: url('/img/icons/social-bilibili.svg') !important; }
+i.sci-github    { background-image: url('/img/icons/social-github.svg') !important; }
+i.sci-email     { background-image: url('/img/icons/social-email.svg') !important; }
