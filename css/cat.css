@@ -3,10 +3,15 @@ body::-webkit-scrollbar {
     width: 0;
 }
 
+#myscoll {
+    background-color: transparent !important;
+    background-image: none !important;
+}
+
 .neko {
-    width: 64px;
-    height: 64px;
-    background-image: url("https://bu.dusays.com/2022/07/20/62d812db74be9.png");
+    width: 72px;
+    height: 72px;
+    background-image: url("/img/nailoong.png");
     position: absolute;
     right: 32px;
     background-repeat: no-repeat;
@@ -22,16 +27,21 @@ body::-webkit-scrollbar {
 
 .neko::after {
     display: none;
-    width: 100px;
-    height: 100px;
-    background-image: url("https://bu.dusays.com/2022/07/20/62d812d95e6f5.png");
-    background-size: contain;
+    width: auto;
+    height: auto;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
     z-index: 9999;
     position: absolute;
     right: 50%;
+    transform: translateX(50%);
     text-align: center;
-    line-height: 100px;
-    top: -115%;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: #333;
+    top: -42px;
 
 }
 

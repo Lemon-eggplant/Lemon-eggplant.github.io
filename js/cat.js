@@ -32,10 +32,10 @@ if (document.body.clientWidth > 992) {
                 z_index: 9999,
                 zoom: 0.9,
                 borderRadius: 5 + 'px',
-                right: 60 + 'px',
-                // 这里可以换为你喜欢的图片，例如我就换为了雪人，但是要抠图
-                nekoImg: "https://bu.dusays.com/2022/07/20/62d812db74be9.png",
-                hoverMsg: "喵喵喵~",
+                right: 58 + 'px',
+                nekoname: 'nailoong',
+                nekoImg: "/img/nailoong.png",
+                hoverMsg: "奶龙来啦~",
                 color: "#6f42c1",
                 during: 500,
                 blog_body: "body",
@@ -64,14 +64,15 @@ if (document.body.clientWidth > 992) {
             $("#" + setting.nekoname)
                 .css({
                     'position': 'fixed',
-                    'top': basicInfo.Band_H * setting.zoom * basicInfo.ViewH * 0.01 - 50 + 'px',
+                    'top': basicInfo.Band_H * setting.zoom * basicInfo.ViewH * 0.01 - 80 + 'px',
                     'z-index': setting.z_index * 10,
                     'right': setting.right,
                     'background-image': 'url(' + setting.nekoImg + ')',
                 });
             show(getBasicInfo());
             $(window)
-                .scroll(function () {
+                .off('scroll.nekoScroll')
+                .on('scroll.nekoScroll', function () {
                     let basicInfo = getBasicInfo();
                     show(basicInfo);
                     $(getThis)
@@ -91,7 +92,7 @@ if (document.body.clientWidth > 992) {
                     $("#" + setting.nekoname)
                         .css({
                             'position': 'fixed',
-                            'top': basicInfo.Band_H * setting.zoom * basicInfo.ViewH * 0.01 - 50 + 'px',
+                            'top': basicInfo.Band_H * setting.zoom * basicInfo.ViewH * 0.01 - 80 + 'px',
                             'z-index': setting.z_index * 10,
                             'right': setting.right,
                             'background-image': 'url(' + setting.nekoImg + ')',
@@ -106,11 +107,12 @@ if (document.body.clientWidth > 992) {
                             .attr("data-msg", setting.hoverMsg);
                     }
                 });
-            this.click(function (e) {
+            this.off('click.nekoScroll').on('click.nekoScroll', function (e) {
                 btf.scrollToDest(0, 500)
             });
             $("#" + setting.nekoname)
-                .click(function () {
+                .off('click.nekoScroll')
+                .on('click.nekoScroll', function () {
                     btf.scrollToDest(0, 500)
                 });
             return this;
@@ -120,9 +122,11 @@ if (document.body.clientWidth > 992) {
     $(document).ready(function () {
         //部分自定义
         $("#myscoll").nekoScroll({
-            bgcolor: 'rgb(0 0 0 / .5)', //背景颜色，没有绳子背景图片时有效
+            bgcolor: 'transparent',
             borderRadius: '2em',
-            zoom: 0.9
+            zoom: 0.9,
+            hoverMsg: '奶龙来啦~',
+            nekoImg: '/img/nailoong.png'
         }
         );
         //自定义（去掉以下注释，并注释掉其他的查看效果）
