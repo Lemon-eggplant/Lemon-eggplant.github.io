@@ -27,7 +27,7 @@ if (document.body.clientWidth > 992) {
     (function ($) {
         $.fn.nekoScroll = function (option) {
             var defaultSetting = {
-                top: '0',
+                top: '68px',
                 scroWidth: 6 + 'px',
                 z_index: 9999,
                 zoom: 0.9,
@@ -122,10 +122,10 @@ if (document.body.clientWidth > 992) {
     $(document).ready(function () {
         //部分自定义
         $("#myscoll").nekoScroll({
-            bgcolor: 'transparent',
+            bgcolor: '#FFC107',
             borderRadius: '2em',
-            zoom: 0.9,
-            hoverMsg: '奶龙来啦~',
+            zoom: 0.82,
+            hoverMsg: '嗨，我是奶龙~',
             nekoImg: '/img/nailoong.png'
         }
         );

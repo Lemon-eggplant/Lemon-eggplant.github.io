@@ -4,13 +4,17 @@ body::-webkit-scrollbar {
 }
 
 #myscoll {
-    background-color: transparent !important;
-    background-image: none !important;
+    top: 68px !important;
+    width: 6px !important;
+    border-radius: 999px !important;
+    background: linear-gradient(180deg, #ffe082, #ff9800) !important;
+    background-image: linear-gradient(180deg, #ffe082, #ff9800) !important;
+    box-shadow: 0 0 8px rgba(255, 193, 7, 0.45) !important;
 }
 
 .neko {
-    width: 72px;
-    height: 72px;
+    width: 68px;
+    height: 80px;
     background-image: url("/img/nailoong.png");
     position: absolute;
     right: 32px;
