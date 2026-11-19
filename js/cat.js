@@ -8,15 +8,24 @@ if (document.body.clientWidth > 992) {
         var ScrollTop = $(window).scrollTop();
         /* 可滚动的高度 */
         var S_V = DocH - ViewH;
-        var Band_H = ScrollTop / (DocH - ViewH) * 100;
+        var Band_H = S_V > 0 ? ScrollTop / S_V * 100 : 0;
+        var navH = $('#nav').outerHeight() || 0;
         return {
             ViewH: ViewH,
             DocH: DocH,
             ScrollTop: ScrollTop,
             Band_H: Band_H,
-            S_V: S_V
+            S_V: S_V,
+            navH: navH
         }
     };
+    var NEKO_SIZE = 56;
+    function nekoLineHeight(info) {
+        return Math.max(0, info.Band_H * Math.max(info.ViewH - info.navH, 1) * 0.01);
+    }
+    function nekoTop(info) {
+        return info.navH + nekoLineHeight(info) - NEKO_SIZE + 'px';
+    }
     function show(basicInfo) {
         if (basicInfo.ScrollTop > 0.001) {
             $(".neko").css('display', 'block');
@@ -27,7 +36,7 @@ if (document.body.clientWidth > 992) {
     (function ($) {
         $.fn.nekoScroll = function (option) {
             var defaultSetting = {
-                top: '68px',
+                top: '0px',
                 scroWidth: 6 + 'px',
                 z_index: 9999,
                 zoom: 0.9,
@@ -51,8 +60,8 @@ if (document.body.clientWidth > 992) {
                 .css({
                     'position': 'fixed',
                     'width': setting.scroWidth,
-                    'top': setting.top,
-                    'height': basicInfo.Band_H * setting.zoom * basicInfo.ViewH * 0.01 + 'px',
+                    'top': basicInfo.navH + 'px',
+                    'height': nekoLineHeight(basicInfo) + 'px',
                     'z-index': setting.z_index,
                     'background-color': setting.bgcolor,
                     "border-radius": setting.borderRadius,
@@ -64,7 +73,7 @@ if (document.body.clientWidth > 992) {
             $("#" + setting.nekoname)
                 .css({
                     'position': 'fixed',
-                    'top': basicInfo.Band_H * setting.zoom * basicInfo.ViewH * 0.01 - 80 + 'px',
+                    'top': nekoTop(basicInfo),
                     'z-index': setting.z_index * 10,
                     'right': setting.right,
                     'background-image': 'url(' + setting.nekoImg + ')',
@@ -79,8 +88,8 @@ if (document.body.clientWidth > 992) {
                         .css({
                             'position': 'fixed',
                             'width': setting.scroWidth,
-                            'top': setting.top,
-                            'height': basicInfo.Band_H * setting.zoom * basicInfo.ViewH * 0.01 + 'px',
+                            'top': basicInfo.navH + 'px',
+                            'height': nekoLineHeight(basicInfo) + 'px',
                             'z-index': setting.z_index,
                             'background-color': setting.bgcolor,
                             "border-radius": setting.borderRadius,
@@ -92,7 +101,7 @@ if (document.body.clientWidth > 992) {
                     $("#" + setting.nekoname)
                         .css({
                             'position': 'fixed',
-                            'top': basicInfo.Band_H * setting.zoom * basicInfo.ViewH * 0.01 - 80 + 'px',
+                            'top': nekoTop(basicInfo),
                             'z-index': setting.z_index * 10,
                             'right': setting.right,
                             'background-image': 'url(' + setting.nekoImg + ')',
