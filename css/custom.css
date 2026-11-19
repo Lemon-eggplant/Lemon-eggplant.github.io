@@ -311,10 +311,10 @@ h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
    终极本地字体组合：霞鹜文楷 + Maple Mono
    ========================================= */
 
-/* 1. 引入本地霞鹜文楷 (中文) */
+/* 1. 引入本地霞鹜文楷 Screen (中文，屏幕阅读版，与 fomal 一致) */
 @font-face {
-  font-family: 'LXGW WenKai';
-  src: url('/font/LXGWWenKai-Regular.ttf') format('truetype');
+  font-family: 'LXGW WenKai Screen';
+  src: url('/font/LXGWWenKaiScreen.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -331,7 +331,7 @@ h1::before, h2::before, h3::before, h4::before, h5::before, h6::before {
 
 /* 3. 全局应用 (英文优先 Maple Mono，中文匹配霞鹜文楷) */
 body, p, span, a, div, h1, h2, h3, h4, h5, h6, #nav, #site-title, #site-subtitle, .post-content, #article-container, .card-widget, #footer-wrap {
-  font-family: 'Maple Mono', 'LXGW WenKai', 'PingFang SC', 'Microsoft YaHei', sans-serif !important;
+  font-family: 'Maple Mono', 'LXGW WenKai Screen', 'PingFang SC', 'Microsoft YaHei', sans-serif !important;
   font-weight: 500 !important; 
 }
 
@@ -350,10 +350,18 @@ code, pre, kbd, samp, .highlight, .highlight pre, .highlight span, figure.highli
 /* =========================================
    🚨 终极保护：拯救被挤没的 KaTeX 公式
    ========================================= */
-.katex, .katex * {
+#article-container .katex,
+#article-container .katex * {
   font-family: 'KaTeX_Math', 'KaTeX_Main', 'Times New Roman', serif !important;
   font-weight: normal !important; 
   letter-spacing: 0 !important; /* 绝对不能加字间距，否则公式会隐形 */
+}
+
+/* 让行内公式与正文（Screen 版）视觉大小一致：默认 1.21em 偏大 */
+#article-container p .katex,
+#article-container li .katex,
+#article-container td .katex {
+  font-size: 1em !important;
 }
 
 
